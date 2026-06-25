@@ -363,7 +363,6 @@
             <div class="admin-dash" id="adminDash">
                 <div class="stats-grid" id="statsGrid"></div>
 
-                <!-- Google Sheets Config -->
                 <div class="config-section">
                     <h4><i class="fa-solid fa-database" style="color:var(--accent)"></i> Base de datos (Google Sheets)</h4>
                     <div class="config-row">
@@ -380,7 +379,6 @@
                     </div>
                 </div>
 
-                <!-- Instrucciones colapsables -->
                 <div class="collapsible" id="instrCollapsible">
                     <div class="collapsible-header" id="instrHeader">
                         <span><i class="fa-solid fa-circle-question" style="margin-right:0.4rem;color:var(--accent)"></i> Ver instrucciones de configuracion</span>
@@ -455,7 +453,6 @@ function doPost(e) {
                     </div>
                 </div>
 
-                <!-- Cambiar contraseña -->
                 <div class="config-section">
                     <h4><i class="fa-solid fa-key" style="color:var(--fire-orange)"></i> Cambiar contrasena</h4>
                     <div class="config-row" style="margin-top:0.5rem">
@@ -508,552 +505,129 @@ function doPost(e) {
     </div>
 
     <script>
-    // ============================================================
-    // PARTICULAS
-    // ============================================================
+    /* ==================== PARTICULAS ==================== */
     (function(){
-        const cv=document.getElementById('particles-canvas'),ctx=cv.getContext('2d');
-        let ps=[];
-        function resize(){cv.width=innerWidth;cv.height=innerHeight}
-        resize();addEventListener('resize',resize);
-        for(let i=0;i<40;i++) ps.push({x:Math.random()*cv.width,y:Math.random()*cv.height,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,sz:Math.random()*2+0.5,op:Math.random()*0.3+0.1,col:Math.random()>0.7?'255,109,0':'0,230,118'});
-        function draw(){
-            ctx.clearRect(0,0,cv.width,cv.height);
-            ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>cv.width)p.vx*=-1;if(p.y<0||p.y>cv.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,Math.max(0.5,p.sz),0,Math.PI*2);ctx.fillStyle=`rgba(${p.col},${p.op})`;ctx.fill()});
-            for(let i=0;i<ps.length;i++)for(let j=i+1;j<ps.length;j++){const dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<100){ctx.beginPath();ctx.moveTo(ps[i].x,ps[i].y);ctx.lineTo(ps[j].x,ps[j].y);ctx.strokeStyle=`rgba(0,230,118,${0.04*(1-d/100)})`;ctx.lineWidth=0.5;ctx.stroke()}}
-            requestAnimationFrame(draw);
-        }
-        draw();
+        const cv=document.getElementById('particles-canvas'),ctx=cv.getContext('2d');let ps=[];
+        function resize(){cv.width=innerWidth;cv.height=innerHeight}resize();addEventListener('resize',resize);
+        for(let i=0;i<40;i++)ps.push({x:Math.random()*cv.width,y:Math.random()*cv.height,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,sz:Math.random()*2+0.5,op:Math.random()*0.3+0.1,col:Math.random()>0.7?'255,109,0':'0,230,118'});
+        function draw(){ctx.clearRect(0,0,cv.width,cv.height);ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>cv.width)p.vx*=-1;if(p.y<0||p.y>cv.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,Math.max(0.5,p.sz),0,Math.PI*2);ctx.fillStyle=`rgba(${p.col},${p.op})`;ctx.fill()});for(let i=0;i<ps.length;i++)for(let j=i+1;j<ps.length;j++){const dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<100){ctx.beginPath();ctx.moveTo(ps[i].x,ps[i].y);ctx.lineTo(ps[j].x,ps[j].y);ctx.strokeStyle=`rgba(0,230,118,${0.04*(1-d/100)})`;ctx.lineWidth=0.5;ctx.stroke()}}requestAnimationFrame(draw)}draw();
     })();
 
-    // ============================================================
-    // ESTADO
-    // ============================================================
+    /* ==================== ESTADO ==================== */
     let regs = [];
-    let sheetUrl = localStorage.getItem('ff_sheet_url') || '';
+    /* <<< TU URL DE GOOGLE SHEETS YA CONFIGURADA >>> */
+    let sheetUrl = localStorage.getItem('ff_sheet_url') || 'https://script.google.com/macros/s/AKfycbyNJnOle9igY6uZwRN7-F9QlLemzOK1m3TZqmJrhmv8bTAzglYN6qNL7oFdtPWISB4PMQ/exec';
     let adminPwd = localStorage.getItem('ff_pwd') || 'admin123';
     let docType = 'cedula';
     let isOnline = false;
     let syncing = false;
 
-    // ============================================================
-    // ELEMENTOS
-    // ============================================================
-    const regForm = document.getElementById('regForm');
-    const togOpts = document.querySelectorAll('.toggle-option');
-    const cedField = document.getElementById('cedField');
-    const fnField = document.getElementById('fnField');
-    const cedInput = document.getElementById('cedula');
-    const fnInput = document.getElementById('fechaNac');
-    const sucOverlay = document.getElementById('sucOverlay');
-    const adminPanel = document.getElementById('adminPanel');
-    const loginBox = document.getElementById('loginBox');
-    const adminDash = document.getElementById('adminDash');
-    const formLoading = document.getElementById('formLoading');
-    const subBtn = document.getElementById('subBtn');
-    const emailForm = document.getElementById('emailForm');
-    const syncDot = document.getElementById('syncDot');
-    const sheetDot = document.getElementById('sheetDot');
-    const sheetStatusText = document.getElementById('sheetStatusText');
-
-    // ============================================================
-    // TOGGLE CEDULA / FECHA
-    // ============================================================
-    togOpts.forEach(b => b.addEventListener('click', () => {
-        togOpts.forEach(o => { o.classList.remove('active'); o.setAttribute('aria-checked','false'); });
-        b.classList.add('active'); b.setAttribute('aria-checked','true');
-        docType = b.dataset.value;
-        cedField.classList.toggle('vis', docType === 'cedula');
-        fnField.classList.toggle('vis', docType === 'fecha');
-        clearErrs();
-    }));
-
-    document.getElementById('gameId').addEventListener('input', function() { this.value = this.value.replace(/[^0-9]/g,''); });
-
-    // ============================================================
-    // VALIDACION
-    // ============================================================
-    function clearErrs() {
-        document.querySelectorAll('.form-input').forEach(i => i.classList.remove('error'));
-        document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('show'));
-    }
-    function showErr(id, errId) {
-        document.getElementById(id).classList.add('error');
-        document.getElementById(errId).classList.add('show');
-    }
-    document.querySelectorAll('.form-input').forEach(inp => {
-        inp.addEventListener('input', function() {
-            this.classList.remove('error');
-            const e = this.parentElement.querySelector('.error-msg');
-            if (e) e.classList.remove('show');
-        });
-    });
-
-    function validate() {
-        clearErrs(); let ok = true;
-        if (!document.getElementById('nombre').value.trim()) { showErr('nombre','nombreErr'); ok=false; }
-        if (!document.getElementById('apellido').value.trim()) { showErr('apellido','apellidoErr'); ok=false; }
-        if (docType === 'cedula') {
-            if (!cedInput.value.trim() || cedInput.value.trim().length < 3) { showErr('cedula','cedErr'); ok=false; }
-        } else {
-            if (!fnInput.value) { showErr('fechaNac','fnErr'); ok=false; }
-        }
-        if (!document.getElementById('gameId').value.trim() || document.getElementById('gameId').value.trim().length < 4) { showErr('gameId','gidErr'); ok=false; }
-        if (!ok) toast('Completa todos los campos correctamente','err');
-        return ok;
-    }
-
-    // ============================================================
-    // GOOGLE SHEETS - SINCRONIZACION
-    // ============================================================
-    function setSyncState(state) {
-        // state: 'off' | 'loading' | 'online'
-        syncDot.className = 'sync-dot';
-        sheetDot.className = 'dot';
-        if (state === 'online') {
-            syncDot.classList.add('online');
-            sheetDot.classList.add('on');
-            sheetStatusText.textContent = 'Conectado a Google Sheets';
-            isOnline = true;
-        } else if (state === 'loading') {
-            syncDot.classList.add('syncing');
-            sheetDot.classList.add('loading');
-            sheetStatusText.textContent = 'Sincronizando...';
-        } else {
-            sheetDot.classList.add('off');
-            sheetStatusText.textContent = sheetUrl ? 'Error de conexion' : 'Sin conectar';
-            isOnline = false;
-        }
-    }
-
-    async function syncFromSheet() {
-        if (!sheetUrl || syncing) return;
-        syncing = true;
-        setSyncState('loading');
-        try {
-            const resp = await fetch(sheetUrl);
-            if (!resp.ok) throw new Error('HTTP ' + resp.status);
-            const data = await resp.json();
-            if (Array.isArray(data)) {
-                regs = data.map(r => ({
-                    id: parseInt(r['ID'] || r['id']) || 0,
-                    nombre: r['Nombre'] || r['nombre'] || '',
-                    apellido: r['Apellido'] || r['apellido'] || '',
-                    docType: (r['Tipo'] || r['tipo'] || '').toLowerCase().includes('cedula') ? 'cedula' : 'fecha',
-                    docValue: r['Documento'] || r['documento'] || '',
-                    gameId: String(r['ID Free Fire'] || r['gameId'] || ''),
-                    timestamp: parseInt(r['Timestamp'] || r['timestamp']) || 0
-                })).filter(r => r.id > 0);
-                localStorage.setItem('ff_regs', JSON.stringify(regs));
-                setSyncState('online');
-            }
-        } catch(e) {
-            console.warn('Error sincronizando:', e);
-            setSyncState('off');
-            regs = JSON.parse(localStorage.getItem('ff_regs') || '[]');
-        }
-        syncing = false;
-        updateUI();
-    }
-
-    async function sendToSheet(reg) {
-        if (!sheetUrl) return false;
-        try {
-            const resp = await fetch(sheetUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: reg.id, nombre: reg.nombre, apellido: reg.apellido,
-                    docType: reg.docType, docValue: reg.docValue,
-                    gameId: reg.gameId, timestamp: reg.timestamp
-                })
-            });
-            const data = await resp.json();
-            if (data.success) setSyncState('online');
-            return data.success === true;
-        } catch(e) {
-            console.warn('Error enviando a sheet:', e);
-            setSyncState('off');
-            return false;
-        }
-    }
-
-    async function deleteFromSheet(id) {
-        if (!sheetUrl) return;
-        try {
-            await fetch(sheetUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'delete', id: id })
-            });
-        } catch(e) { console.warn(e); }
-    }
-
-    async function deleteAllFromSheet() {
-        if (!sheetUrl) return;
-        try {
-            await fetch(sheetUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'deleteAll' })
-            });
-        } catch(e) { console.warn(e); }
-    }
-
-    // ============================================================
-    // FORMSUBMIT (correo)
-    // ============================================================
-    function sendToEmail(reg) {
-        const docLabel = reg.docType === 'cedula' ? 'Cedula' : 'Fecha de nacimiento';
-        document.getElementById('eNombre').value = reg.nombre;
-        document.getElementById('eApellido').value = reg.apellido;
-        document.getElementById('eTipoDoc').value = docLabel;
-        document.getElementById('eDoc').value = reg.docValue;
-        document.getElementById('eGameId').value = reg.gameId;
-        document.getElementById('eFecha').value = new Date(reg.timestamp).toLocaleString('es-CO');
-        emailForm.submit();
-    }
-
-    // ============================================================
-    // REGISTRO PRINCIPAL
-    // ============================================================
-    regForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        if (!validate()) return;
-
-        formLoading.classList.add('vis');
-        subBtn.disabled = true;
-
-        const reg = {
-            id: Date.now(),
-            nombre: document.getElementById('nombre').value.trim(),
-            apellido: document.getElementById('apellido').value.trim(),
-            docType,
-            docValue: docType === 'cedula' ? cedInput.value.trim() : fnInput.value,
-            gameId: document.getElementById('gameId').value.trim(),
-            timestamp: Date.now()
-        };
-
-        // Guardar localmente
-        regs.push(reg);
-        localStorage.setItem('ff_regs', JSON.stringify(regs));
-
-        // Enviar a Google Sheets (esperar)
-        if (sheetUrl) await sendToSheet(reg);
-
-        // Enviar correo (fire and forget)
-        sendToEmail(reg);
-
-        // Mostrar exito
-        formLoading.classList.remove('vis');
-        subBtn.disabled = false;
-        showSuccessModal();
-        updateUI();
-        regForm.reset();
-        togOpts[0].click();
-    });
-
-    // ============================================================
-    // MODAL EXITO
-    // ============================================================
-    function showSuccessModal() {
-        sucOverlay.classList.add('vis');
-        document.body.style.overflow = 'hidden';
-        toast('Registro completado con exito','ok');
-    }
-    document.getElementById('closeModal').addEventListener('click', closeSuc);
-    sucOverlay.addEventListener('click', e => { if (e.target === sucOverlay) closeSuc(); });
-    function closeSuc() { sucOverlay.classList.remove('vis'); document.body.style.overflow = ''; }
-
-    // ============================================================
-    // UI UPDATE
-    // ============================================================
-    function updateUI() {
-        updateCount();
-        renderRecent();
-    }
-
-    function updateCount() {
-        const el = document.getElementById('playerCount');
-        const target = regs.length;
-        const cur = parseInt(el.textContent) || 0;
-        if (cur === target) return;
-        const start = performance.now();
-        function tick(now) {
-            const p = Math.min((now - start) / 500, 1);
-            el.textContent = Math.round(cur + (target - cur) * (1 - Math.pow(1 - p, 3)));
-            if (p < 1) requestAnimationFrame(tick);
-        }
-        requestAnimationFrame(tick);
-    }
-
-    function renderRecent() {
-        const list = document.getElementById('recentList');
-        const items = document.getElementById('recentItems');
-        if (!regs.length) { list.style.display = 'none'; return; }
-        list.style.display = 'block';
-        items.innerHTML = '';
-        regs.slice(-5).reverse().forEach((r, i) => {
-            const d = document.createElement('div');
-            d.className = 'recent-item';
-            d.style.animationDelay = `${i * 0.08}s`;
-            d.innerHTML = `<div class="av">${esc((r.nombre[0]+r.apellido[0]).toUpperCase())}</div><div class="info"><div class="nm">${esc(r.nombre)} ${esc(r.apellido)}</div><div class="gid">ID: ${esc(r.gameId)}</div></div><div class="tm">${timeAgo(r.timestamp)}</div>`;
-            items.appendChild(d);
-        });
-    }
-
-    function timeAgo(ts) {
-        if (!ts) return '';
-        const s = Math.floor((Date.now() - ts) / 1000);
-        if (s < 0) return 'ahora';
-        if (s < 60) return 'ahora';
-        const m = Math.floor(s / 60);
-        if (m < 60) return `hace ${m}m`;
-        const h = Math.floor(m / 60);
-        if (h < 24) return `hace ${h}h`;
-        return `hace ${Math.floor(h/24)}d`;
-    }
-    function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-
-    // ============================================================
-    // TOAST
-    // ============================================================
-    function toast(msg, type) {
-        const t = document.createElement('div');
-        t.className = `toast ${type}`;
-        t.innerHTML = `<i class="fa-solid ${type==='err'?'fa-circle-xmark':'fa-circle-check'}"></i> ${msg}`;
-        document.getElementById('toastC').appendChild(t);
-        setTimeout(() => { t.style.animation='tO 0.3s ease-in forwards'; setTimeout(()=>t.remove(),300); }, 3000);
-    }
-
-    // ============================================================
-    // ADMIN PANEL
-    // ============================================================
-    document.getElementById('adminLink').addEventListener('click', openAdmin);
-    document.getElementById('adminLink').addEventListener('keydown', e => { if (e.key==='Enter') openAdmin(); });
-
-    function openAdmin() {
-        adminPanel.classList.add('vis');
-        document.body.style.overflow = 'hidden';
-        if (sessionStorage.getItem('ff_logged') === '1') {
-            loginBox.style.display = 'none';
-            adminDash.classList.add('vis');
-            document.getElementById('sheetUrlInput').value = sheetUrl;
-            refreshAdmin();
-        } else {
-            loginBox.style.display = 'block';
-            adminDash.classList.remove('vis');
-            document.getElementById('adminPass').value = '';
-            document.getElementById('loginErr').style.display = 'none';
-        }
-    }
-    function closeAdmin() {
-        if (!adminPanel.classList.contains('vis')) return;
-        adminPanel.classList.remove('vis');
-        document.body.style.overflow = '';
-    }
-    document.getElementById('backBtn').addEventListener('click', closeAdmin);
-
-    // Login
-    document.getElementById('loginBtn').addEventListener('click', doLogin);
-    document.getElementById('adminPass').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
-    function doLogin() {
-        if (document.getElementById('adminPass').value === adminPwd) {
-            sessionStorage.setItem('ff_logged','1');
-            loginBox.style.display = 'none';
-            adminDash.classList.add('vis');
-            document.getElementById('sheetUrlInput').value = sheetUrl;
-            refreshAdmin();
-        } else {
-            document.getElementById('loginErr').style.display = 'block';
-            document.getElementById('adminPass').value = '';
-        }
-    }
-
-    function refreshAdmin() { renderStats(); renderTable(); }
-
-    function renderStats() {
-        const t = regs.length, c = regs.filter(r => r.docType==='cedula').length;
-        document.getElementById('statsGrid').innerHTML = `
-            <div class="stat-card green"><div class="stat-num">${t}</div><div class="stat-lbl">Total registrados</div></div>
-            <div class="stat-card green"><div class="stat-num">${c}</div><div class="stat-lbl">Con cedula</div></div>
-            <div class="stat-card orange"><div class="stat-num">${t-c}</div><div class="stat-lbl">Sin cedula</div></div>
-            <div class="stat-card white"><div class="stat-num">${new Set(regs.map(r=>r.gameId)).size}</div><div class="stat-lbl">IDs unicos</div></div>`;
-    }
-
-    function renderTable(filter = '') {
-        const tbody = document.getElementById('tableBody');
-        let data = regs;
-        if (filter) {
-            const f = filter.toLowerCase();
-            data = regs.filter(r => r.nombre.toLowerCase().includes(f) || r.apellido.toLowerCase().includes(f) || r.gameId.includes(f) || r.docValue.toLowerCase().includes(f));
-        }
-        if (!data.length) {
-            tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fa-solid fa-inbox"></i><p>${filter?'Sin resultados':'No hay registros todavia'}</p></div></td></tr>`;
-            return;
-        }
-        tbody.innerHTML = data.map((r, i) => {
-            const badge = r.docType==='cedula' ? `<span class="doc-badge ced">Cedula: ${esc(r.docValue)}</span>` : `<span class="doc-badge fn">Nac: ${esc(r.docValue)}</span>`;
-            const fecha = r.timestamp ? new Date(r.timestamp).toLocaleString('es-CO',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : 'N/A';
-            return `<tr>
-                <td>${i+1}</td>
-                <td style="font-weight:700">${esc(r.nombre)} ${esc(r.apellido)}</td>
-                <td>${badge}</td>
-                <td class="game-id-cell">${esc(r.gameId)}</td>
-                <td class="date-cell">${fecha}</td>
-                <td><button class="del-row" onclick="deleteReg(${r.id})" title="Eliminar"><i class="fa-solid fa-xmark"></i></button></td>
-            </tr>`;
-        }).join('');
-    }
-
-    document.getElementById('searchInput').addEventListener('input', function() { renderTable(this.value.trim()); });
-
-    window.deleteReg = async function(id) {
-        showConfirm('Eliminar registro', 'Seguro que deseas eliminar este jugador?', async () => {
-            regs = regs.filter(r => r.id !== id);
-            localStorage.setItem('ff_regs', JSON.stringify(regs));
-            await deleteFromSheet(id);
-            refreshAdmin(); updateUI();
-            toast('Registro eliminado','ok');
-        });
-    };
-
-    document.getElementById('delAllBtn').addEventListener('click', () => {
-        if (!regs.length) { toast('No hay registros','err'); return; }
-        showConfirm('Borrar todo', `Se eliminaran ${regs.length} registros. Esta accion no se puede deshacer.`, async () => {
-            regs = [];
-            localStorage.setItem('ff_regs', JSON.stringify(regs));
-            await deleteAllFromSheet();
-            refreshAdmin(); updateUI();
-            document.getElementById('recentList').style.display = 'none';
-            document.getElementById('recentItems').innerHTML = '';
-            toast('Todos los registros eliminados','ok');
-        });
-    });
-
-    // ============================================================
-    // GOOGLE SHEETS CONFIG EN ADMIN
-    // ============================================================
-    document.getElementById('saveSheetBtn').addEventListener('click', async () => {
-        const url = document.getElementById('sheetUrlInput').value.trim();
-        const hadUrl = sheetUrl && sheetUrl.length > 0;
-        sheetUrl = url;
+    /* Guardar la URL por defecto en localStorage si no estaba */
+    if (!localStorage.getItem('ff_sheet_url')) {
         localStorage.setItem('ff_sheet_url', sheetUrl);
-
-        if (sheetUrl) {
-            if (!hadUrl) {
-                // Primera vez: migrar datos existentes al sheet
-                const localRegs = JSON.parse(localStorage.getItem('ff_regs') || '[]');
-                if (localRegs.length > 0) {
-                    toast(`Migrando ${localRegs.length} registros al Google Sheet...`,'ok');
-                    for (const reg of localRegs) {
-                        await sendToSheet(reg);
-                    }
-                }
-            }
-            await syncFromSheet();
-            toast('Google Sheet conectado','ok');
-        } else {
-            setSyncState('off');
-            regs = JSON.parse(localStorage.getItem('ff_regs') || '[]');
-            updateUI();
-            toast('Modo local activo','ok');
-        }
-    });
-
-    document.getElementById('syncNowBtn').addEventListener('click', async () => {
-        if (!sheetUrl) { toast('Primero configura la URL del Google Sheet','err'); return; }
-        toast('Sincronizando...','ok');
-        await syncFromSheet();
-        refreshAdmin();
-        toast('Sincronizacion completa','ok');
-    });
-
-    document.getElementById('clearSheetBtn').addEventListener('click', () => {
-        showConfirm('Desconectar Google Sheet', 'Se desconectara la base de datos en la nube. Los datos locales se mantienen.', () => {
-            sheetUrl = '';
-            localStorage.removeItem('ff_sheet_url');
-            document.getElementById('sheetUrlInput').value = '';
-            setSyncState('off');
-            regs = JSON.parse(localStorage.getItem('ff_regs') || '[]');
-            updateUI(); refreshAdmin();
-            toast('Google Sheet desconectado','ok');
-        });
-    });
-
-    // ============================================================
-    // INSTRUCCIONES COLAPSABLES
-    // ============================================================
-    document.getElementById('instrHeader').addEventListener('click', () => {
-        document.getElementById('instrHeader').classList.toggle('open');
-        document.getElementById('instrBody').classList.toggle('open');
-    });
-
-    document.getElementById('copyCodeBtn').addEventListener('click', () => {
-        const textarea = document.getElementById('appsScriptCode');
-        textarea.select();
-        navigator.clipboard.writeText(textarea.value).then(() => {
-            document.getElementById('copyCodeBtn').innerHTML = '<i class="fa-solid fa-check"></i> Copiado';
-            setTimeout(() => { document.getElementById('copyCodeBtn').innerHTML = '<i class="fa-solid fa-copy"></i> Copiar'; }, 2000);
-        });
-    });
-
-    // ============================================================
-    // EXPORTAR CSV
-    // ============================================================
-    document.getElementById('exportBtn').addEventListener('click', () => {
-        if (!regs.length) { toast('No hay datos para exportar','err'); return; }
-        const h = 'Nombre,Apellido,Tipo Documento,Documento,ID Free Fire,Fecha Registro\n';
-        const rows = regs.map(r => `"${r.nombre}","${r.apellido}","${r.docType==='cedula'?'Cedula':'Fecha Nacimiento'}","${r.docValue}","${r.gameId}","${r.timestamp?new Date(r.timestamp).toLocaleString('es-CO'):'N/A'}"`).join('\n');
-        const blob = new Blob(['\uFEFF'+h+rows], {type:'text/csv;charset=utf-8;'});
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `torneo_freefire_${new Date().toISOString().slice(0,10)}.csv`;
-        a.click();
-        toast('Archivo CSV descargado','ok');
-    });
-
-    // ============================================================
-    // CAMBIAR CONTRASENA
-    // ============================================================
-    document.getElementById('savePassBtn').addEventListener('click', () => {
-        const v = document.getElementById('newPass').value;
-        if (!v || v.length < 4) { toast('Minimo 4 caracteres','err'); return; }
-        adminPwd = v;
-        localStorage.setItem('ff_pwd', adminPwd);
-        document.getElementById('newPass').value = '';
-        toast('Contrasena actualizada','ok');
-    });
-
-    // ============================================================
-    // CONFIRM DIALOG
-    // ============================================================
-    let confirmCb = null;
-    function showConfirm(title, msg, cb) {
-        document.getElementById('confirmTitle').textContent = title;
-        document.getElementById('confirmMsg').textContent = msg;
-        document.getElementById('confirmOverlay').classList.add('vis');
-        confirmCb = cb;
     }
-    function closeConfirm() { document.getElementById('confirmOverlay').classList.remove('vis'); confirmCb = null; }
-    document.getElementById('confirmCancel').addEventListener('click', closeConfirm);
-    document.getElementById('confirmOk').addEventListener('click', () => { if (confirmCb) confirmCb(); closeConfirm(); });
-    document.getElementById('confirmOverlay').addEventListener('click', e => { if (e.target === document.getElementById('confirmOverlay')) closeConfirm(); });
 
-    document.addEventListener('keydown', e => { if (e.key==='Escape') { closeSuc(); closeAdmin(); closeConfirm(); } });
+    /* ==================== ELEMENTOS ==================== */
+    const regForm=document.getElementById('regForm'),togOpts=document.querySelectorAll('.toggle-option'),
+          cedField=document.getElementById('cedField'),fnField=document.getElementById('fnField'),
+          cedInput=document.getElementById('cedula'),fnInput=document.getElementById('fechaNac'),
+          sucOverlay=document.getElementById('sucOverlay'),adminPanel=document.getElementById('adminPanel'),
+          loginBox=document.getElementById('loginBox'),adminDash=document.getElementById('adminDash'),
+          formLoading=document.getElementById('formLoading'),subBtn=document.getElementById('subBtn'),
+          emailForm=document.getElementById('emailForm'),syncDot=document.getElementById('syncDot'),
+          sheetDot=document.getElementById('sheetDot'),sheetStatusText=document.getElementById('sheetStatusText');
 
-    // ============================================================
-    // INIT: cargar datos al abrir la pagina
-    // ============================================================
-    (async function init() {
-        if (sheetUrl) {
-            await syncFromSheet();
-        } else {
-            regs = JSON.parse(localStorage.getItem('ff_regs') || '[]');
-            setSyncState('off');
-            updateUI();
-        }
-    })();
+    /* ==================== TOGGLE ==================== */
+    togOpts.forEach(b=>b.addEventListener('click',()=>{togOpts.forEach(o=>{o.classList.remove('active');o.setAttribute('aria-checked','false')});b.classList.add('active');b.setAttribute('aria-checked','true');docType=b.dataset.value;cedField.classList.toggle('vis',docType==='cedula');fnField.classList.toggle('vis',docType==='fecha');clearErrs()}));
+    document.getElementById('gameId').addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'')});
+
+    /* ==================== VALIDACION ==================== */
+    function clearErrs(){document.querySelectorAll('.form-input').forEach(i=>i.classList.remove('error'));document.querySelectorAll('.error-msg').forEach(e=>e.classList.remove('show'))}
+    function showErr(id,errId){document.getElementById(id).classList.add('error');document.getElementById(errId).classList.add('show')}
+    document.querySelectorAll('.form-input').forEach(inp=>{inp.addEventListener('input',function(){this.classList.remove('error');const e=this.parentElement.querySelector('.error-msg');if(e)e.classList.remove('show')})});
+    function validate(){clearErrs();let ok=true;if(!document.getElementById('nombre').value.trim()){showErr('nombre','nombreErr');ok=false}if(!document.getElementById('apellido').value.trim()){showErr('apellido','apellidoErr');ok=false}if(docType==='cedula'){if(!cedInput.value.trim()||cedInput.value.trim().length<3){showErr('cedula','cedErr');ok=false}}else{if(!fnInput.value){showErr('fechaNac','fnErr');ok=false}}if(!document.getElementById('gameId').value.trim()||document.getElementById('gameId').value.trim().length<4){showErr('gameId','gidErr');ok=false}if(!ok)toast('Completa todos los campos correctamente','err');return ok}
+
+    /* ==================== GOOGLE SHEETS ==================== */
+    function setSyncState(state){syncDot.className='sync-dot';sheetDot.className='dot';if(state==='online'){syncDot.classList.add('online');sheetDot.classList.add('on');sheetStatusText.textContent='Conectado a Google Sheets';isOnline=true}else if(state==='loading'){syncDot.classList.add('syncing');sheetDot.classList.add('loading');sheetStatusText.textContent='Sincronizando...'}else{sheetDot.classList.add('off');sheetStatusText.textContent=sheetUrl?'Error de conexion':'Sin conectar';isOnline=false}}
+
+    async function syncFromSheet(){if(!sheetUrl||syncing)return;syncing=true;setSyncState('loading');try{const resp=await fetch(sheetUrl);if(!resp.ok)throw new Error('HTTP '+resp.status);const data=await resp.json();if(Array.isArray(data)){regs=data.map(r=>({id:parseInt(r['ID']||r['id'])||0,nombre:r['Nombre']||r['nombre']||'',apellido:r['Apellido']||r['apellido']||'',docType:(r['Tipo']||r['tipo']||'').toLowerCase().includes('cedula')?'cedula':'fecha',docValue:r['Documento']||r['documento']||'',gameId:String(r['ID Free Fire']||r['gameId']||''),timestamp:parseInt(r['Timestamp']||r['timestamp'])||0})).filter(r=>r.id>0);localStorage.setItem('ff_regs',JSON.stringify(regs));setSyncState('online')}}catch(e){console.warn('Error sincronizando:',e);setSyncState('off');regs=JSON.parse(localStorage.getItem('ff_regs')||'[]')}syncing=false;updateUI()}
+
+    async function sendToSheet(reg){if(!sheetUrl)return false;try{const resp=await fetch(sheetUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:reg.id,nombre:reg.nombre,apellido:reg.apellido,docType:reg.docType,docValue:reg.docValue,gameId:reg.gameId,timestamp:reg.timestamp})});const data=await resp.json();if(data.success)setSyncState('online');return data.success===true}catch(e){console.warn('Error enviando a sheet:',e);setSyncState('off');return false}}
+
+    async function deleteFromSheet(id){if(!sheetUrl)return;try{await fetch(sheetUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete',id:id})})}catch(e){console.warn(e)}}
+
+    async function deleteAllFromSheet(){if(!sheetUrl)return;try{await fetch(sheetUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'deleteAll'})})}catch(e){console.warn(e)}}
+
+    /* ==================== FORMSUBMIT ==================== */
+    function sendToEmail(reg){document.getElementById('eNombre').value=reg.nombre;document.getElementById('eApellido').value=reg.apellido;document.getElementById('eTipoDoc').value=reg.docType==='cedula'?'Cedula':'Fecha de nacimiento';document.getElementById('eDoc').value=reg.docValue;document.getElementById('eGameId').value=reg.gameId;document.getElementById('eFecha').value=new Date(reg.timestamp).toLocaleString('es-CO');emailForm.submit()}
+
+    /* ==================== REGISTRO ==================== */
+    regForm.addEventListener('submit',async function(e){e.preventDefault();if(!validate())return;formLoading.classList.add('vis');subBtn.disabled=true;const reg={id:Date.now(),nombre:document.getElementById('nombre').value.trim(),apellido:document.getElementById('apellido').value.trim(),docType,docValue:docType==='cedula'?cedInput.value.trim():fnInput.value,gameId:document.getElementById('gameId').value.trim(),timestamp:Date.now()};regs.push(reg);localStorage.setItem('ff_regs',JSON.stringify(regs));if(sheetUrl)await sendToSheet(reg);sendToEmail(reg);formLoading.classList.remove('vis');subBtn.disabled=false;showSuccessModal();updateUI();regForm.reset();togOpts[0].click()});
+
+    /* ==================== MODAL EXITO ==================== */
+    function showSuccessModal(){sucOverlay.classList.add('vis');document.body.style.overflow='hidden';toast('Registro completado con exito','ok')}
+    document.getElementById('closeModal').addEventListener('click',closeSuc);
+    sucOverlay.addEventListener('click',e=>{if(e.target===sucOverlay)closeSuc()});
+    function closeSuc(){sucOverlay.classList.remove('vis');document.body.style.overflow=''}
+
+    /* ==================== UI ==================== */
+    function updateUI(){updateCount();renderRecent()}
+    function updateCount(){const el=document.getElementById('playerCount'),target=regs.length,cur=parseInt(el.textContent)||0;if(cur===target)return;const start=performance.now();function tick(now){const p=Math.min((now-start)/500,1);el.textContent=Math.round(cur+(target-cur)*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(tick)}requestAnimationFrame(tick)}
+    function renderRecent(){const list=document.getElementById('recentList'),items=document.getElementById('recentItems');if(!regs.length){list.style.display='none';return}list.style.display='block';items.innerHTML='';regs.slice(-5).reverse().forEach((r,i)=>{const d=document.createElement('div');d.className='recent-item';d.style.animationDelay=`${i*0.08}s`;d.innerHTML=`<div class="av">${esc((r.nombre[0]+r.apellido[0]).toUpperCase())}</div><div class="info"><div class="nm">${esc(r.nombre)} ${esc(r.apellido)}</div><div class="gid">ID: ${esc(r.gameId)}</div></div><div class="tm">${timeAgo(r.timestamp)}</div>`;items.appendChild(d)})}
+    function timeAgo(ts){if(!ts)return'';const s=Math.floor((Date.now()-ts)/1000);if(s<0)return'ahora';if(s<60)return'ahora';const m=Math.floor(s/60);if(m<60)return`hace ${m}m`;const h=Math.floor(m/60);if(h<24)return`hace ${h}h`;return`hace ${Math.floor(h/24)}d`}
+    function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+    /* ==================== TOAST ==================== */
+    function toast(msg,type){const t=document.createElement('div');t.className=`toast ${type}`;t.innerHTML=`<i class="fa-solid ${type==='err'?'fa-circle-xmark':'fa-circle-check'}"></i> ${msg}`;document.getElementById('toastC').appendChild(t);setTimeout(()=>{t.style.animation='tO 0.3s ease-in forwards';setTimeout(()=>t.remove(),300)},3000)}
+
+    /* ==================== ADMIN ==================== */
+    document.getElementById('adminLink').addEventListener('click',openAdmin);
+    document.getElementById('adminLink').addEventListener('keydown',e=>{if(e.key==='Enter')openAdmin()});
+    function openAdmin(){adminPanel.classList.add('vis');document.body.style.overflow='hidden';if(sessionStorage.getItem('ff_logged')==='1'){loginBox.style.display='none';adminDash.classList.add('vis');document.getElementById('sheetUrlInput').value=sheetUrl;refreshAdmin()}else{loginBox.style.display='block';adminDash.classList.remove('vis');document.getElementById('adminPass').value='';document.getElementById('loginErr').style.display='none'}}
+    function closeAdmin(){if(!adminPanel.classList.contains('vis'))return;adminPanel.classList.remove('vis');document.body.style.overflow=''}
+    document.getElementById('backBtn').addEventListener('click',closeAdmin);
+    document.getElementById('loginBtn').addEventListener('click',doLogin);
+    document.getElementById('adminPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+    function doLogin(){if(document.getElementById('adminPass').value===adminPwd){sessionStorage.setItem('ff_logged','1');loginBox.style.display='none';adminDash.classList.add('vis');document.getElementById('sheetUrlInput').value=sheetUrl;refreshAdmin()}else{document.getElementById('loginErr').style.display='block';document.getElementById('adminPass').value=''}}
+
+    function refreshAdmin(){renderStats();renderTable()}
+    function renderStats(){const t=regs.length,c=regs.filter(r=>r.docType==='cedula').length;document.getElementById('statsGrid').innerHTML=`<div class="stat-card green"><div class="stat-num">${t}</div><div class="stat-lbl">Total registrados</div></div><div class="stat-card green"><div class="stat-num">${c}</div><div class="stat-lbl">Con cedula</div></div><div class="stat-card orange"><div class="stat-num">${t-c}</div><div class="stat-lbl">Sin cedula</div></div><div class="stat-card white"><div class="stat-num">${new Set(regs.map(r=>r.gameId)).size}</div><div class="stat-lbl">IDs unicos</div></div>`}
+
+    function renderTable(filter=''){const tbody=document.getElementById('tableBody');let data=regs;if(filter){const f=filter.toLowerCase();data=regs.filter(r=>r.nombre.toLowerCase().includes(f)||r.apellido.toLowerCase().includes(f)||r.gameId.includes(f)||r.docValue.toLowerCase().includes(f))}if(!data.length){tbody.innerHTML=`<tr><td colspan="6"><div class="empty-state"><i class="fa-solid fa-inbox"></i><p>${filter?'Sin resultados':'No hay registros todavia'}</p></div></td></tr>`;return}tbody.innerHTML=data.map((r,i)=>{const badge=r.docType==='cedula'?`<span class="doc-badge ced">Cedula: ${esc(r.docValue)}</span>`:`<span class="doc-badge fn">Nac: ${esc(r.docValue)}</span>`;const fecha=r.timestamp?new Date(r.timestamp).toLocaleString('es-CO',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):'N/A';return`<tr><td>${i+1}</td><td style="font-weight:700">${esc(r.nombre)} ${esc(r.apellido)}</td><td>${badge}</td><td class="game-id-cell">${esc(r.gameId)}</td><td class="date-cell">${fecha}</td><td><button class="del-row" onclick="deleteReg(${r.id})" title="Eliminar"><i class="fa-solid fa-xmark"></i></button></td></tr>`}).join('')}
+
+    document.getElementById('searchInput').addEventListener('input',function(){renderTable(this.value.trim())});
+    window.deleteReg=async function(id){showConfirm('Eliminar registro','Seguro que deseas eliminar este jugador?',async()=>{regs=regs.filter(r=>r.id!==id);localStorage.setItem('ff_regs',JSON.stringify(regs));await deleteFromSheet(id);refreshAdmin();updateUI();toast('Registro eliminado','ok')})};
+
+    document.getElementById('delAllBtn').addEventListener('click',()=>{if(!regs.length){toast('No hay registros','err');return}showConfirm('Borrar todo',`Se eliminaran ${regs.length} registros. Esta accion no se puede deshacer.`,async()=>{regs=[];localStorage.setItem('ff_regs',JSON.stringify(regs));await deleteAllFromSheet();refreshAdmin();updateUI();document.getElementById('recentList').style.display='none';document.getElementById('recentItems').innerHTML='';toast('Todos los registros eliminados','ok')})});
+
+    /* ==================== SHEET CONFIG ==================== */
+    document.getElementById('saveSheetBtn').addEventListener('click',async()=>{const url=document.getElementById('sheetUrlInput').value.trim();const hadUrl=sheetUrl&&sheetUrl.length>0;sheetUrl=url;localStorage.setItem('ff_sheet_url',sheetUrl);if(sheetUrl){if(!hadUrl){const localRegs=JSON.parse(localStorage.getItem('ff_regs')||'[]');if(localRegs.length>0){toast(`Migrando ${localRegs.length} registros al Google Sheet...`,'ok');for(const reg of localRegs)await sendToSheet(reg)}}await syncFromSheet();toast('Google Sheet conectado','ok')}else{setSyncState('off');regs=JSON.parse(localStorage.getItem('ff_regs')||'[]');updateUI();toast('Modo local activo','ok')}});
+
+    document.getElementById('syncNowBtn').addEventListener('click',async()=>{if(!sheetUrl){toast('Primero configura la URL del Google Sheet','err');return}toast('Sincronizando...','ok');await syncFromSheet();refreshAdmin();toast('Sincronizacion completa','ok')});
+
+    document.getElementById('clearSheetBtn').addEventListener('click',()=>{showConfirm('Desconectar Google Sheet','Se desconectara la base de datos en la nube. Los datos locales se mantienen.',()=>{sheetUrl='';localStorage.removeItem('ff_sheet_url');document.getElementById('sheetUrlInput').value='';setSyncState('off');regs=JSON.parse(localStorage.getItem('ff_regs')||'[]');updateUI();refreshAdmin();toast('Google Sheet desconectado','ok')})});
+
+    /* ==================== INSTRUCCIONES ==================== */
+    document.getElementById('instrHeader').addEventListener('click',()=>{document.getElementById('instrHeader').classList.toggle('open');document.getElementById('instrBody').classList.toggle('open')});
+    document.getElementById('copyCodeBtn').addEventListener('click',()=>{const ta=document.getElementById('appsScriptCode');ta.select();navigator.clipboard.writeText(ta.value).then(()=>{document.getElementById('copyCodeBtn').innerHTML='<i class="fa-solid fa-check"></i> Copiado';setTimeout(()=>{document.getElementById('copyCodeBtn').innerHTML='<i class="fa-solid fa-copy"></i> Copiar'},2000)})});
+
+    /* ==================== EXPORTAR CSV ==================== */
+    document.getElementById('exportBtn').addEventListener('click',()=>{if(!regs.length){toast('No hay datos para exportar','err');return}const h='Nombre,Apellido,Tipo Documento,Documento,ID Free Fire,Fecha Registro\n';const rows=regs.map(r=>`"${r.nombre}","${r.apellido}","${r.docType==='cedula'?'Cedula':'Fecha Nacimiento'}","${r.docValue}","${r.gameId}","${r.timestamp?new Date(r.timestamp).toLocaleString('es-CO'):'N/A'}"`).join('\n');const blob=new Blob(['\uFEFF'+h+rows],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`torneo_freefire_${new Date().toISOString().slice(0,10)}.csv`;a.click();toast('Archivo CSV descargado','ok')});
+
+    /* ==================== CONTRASENA ==================== */
+    document.getElementById('savePassBtn').addEventListener('click',()=>{const v=document.getElementById('newPass').value;if(!v||v.length<4){toast('Minimo 4 caracteres','err');return}adminPwd=v;localStorage.setItem('ff_pwd',adminPwd);document.getElementById('newPass').value='';toast('Contrasena actualizada','ok')});
+
+    /* ==================== CONFIRM ==================== */
+    let confirmCb=null;
+    function showConfirm(title,msg,cb){document.getElementById('confirmTitle').textContent=title;document.getElementById('confirmMsg').textContent=msg;document.getElementById('confirmOverlay').classList.add('vis');confirmCb=cb}
+    function closeConfirm(){document.getElementById('confirmOverlay').classList.remove('vis');confirmCb=null}
+    document.getElementById('confirmCancel').addEventListener('click',closeConfirm);
+    document.getElementById('confirmOk').addEventListener('click',()=>{if(confirmCb)confirmCb();closeConfirm()});
+    document.getElementById('confirmOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('confirmOverlay'))closeConfirm()});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSuc();closeAdmin();closeConfirm()}});
+
+    /* ==================== INIT ==================== */
+    (async function init(){if(sheetUrl){await syncFromSheet()}else{regs=JSON.parse(localStorage.getItem('ff_regs')||'[]');setSyncState('off');updateUI()}})();
     </script>
 </body>
 </html>
