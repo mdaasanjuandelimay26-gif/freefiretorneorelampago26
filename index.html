@@ -26,7 +26,6 @@
         @keyframes gs{0%{background-position:0% 0%}100%{background-position:200% 0%}}
         @keyframes ti{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
         @keyframes to{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(30px)}}
-
         .mc{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem}
         .hb{display:inline-flex;align-items:center;gap:0.5rem;padding:0.35rem 1rem;border:1px solid var(--bc);border-radius:50px;background:var(--acd);font-size:0.75rem;font-weight:600;color:var(--ac);text-transform:uppercase;letter-spacing:2px;margin-bottom:1rem;animation:fd .6s ease-out}
         .hb i{width:6px;height:6px;background:var(--ac);border-radius:50%;animation:bl 1.5s ease-in-out infinite;display:block}
@@ -48,19 +47,12 @@
         .fi::placeholder{color:rgba(255,255,255,.2)}
         .fi:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--acd),0 0 20px rgba(0,230,118,.08);background:rgba(0,230,118,.02)}
         .fi.er{border-color:var(--fr);box-shadow:0 0 0 3px rgba(255,23,68,.15)}
-        .tg{display:flex;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;margin-bottom:1.2rem}
-        .to{flex:1;padding:.65rem .5rem;text-align:center;font-size:.82rem;font-weight:600;color:var(--mt);cursor:pointer;transition:all .3s ease;user-select:none;border:none;background:transparent;font-family:'Rajdhani',sans-serif}
-        .to:hover{color:var(--fg);background:rgba(255,255,255,.03)}
-        .to.ac{background:var(--ac);color:#0a0a0f;box-shadow:0 0 20px rgba(0,230,118,.2)}
-        .cfd{max-height:0;opacity:0;overflow:hidden;transition:max-height .4s ease,opacity .3s ease,margin .3s ease;margin-bottom:0}
-        .cfd.vi{max-height:120px;opacity:1;margin-bottom:1.2rem}
         .em{font-size:.75rem;color:var(--fr);margin-top:.3rem;display:none;align-items:center;gap:.3rem}
         .em.sh{display:flex}
         .sbt{width:100%;padding:.85rem;border:none;border-radius:12px;font-family:'Orbitron',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:1.5px;cursor:pointer;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--ac),#00c853);color:#0a0a0f;transition:all .3s ease;margin-top:.5rem}
         .sbt:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,230,118,.3)}
         .sbt:active{transform:translateY(0)}
         .sbt::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent 40%,rgba(255,255,255,.15) 50%,transparent 60%);animation:sh 3s ease-in-out infinite}
-
         .sov{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:100;display:none;align-items:center;justify-content:center;padding:1rem}
         .sov.vi{display:flex;animation:oi .4s ease-out}
         .scd{background:var(--bg2);border:1px solid var(--bc);border-radius:24px;padding:2.5rem 2rem;text-align:center;max-width:420px;width:100%;position:relative;overflow:hidden;animation:si .5s ease-out .1s both;box-shadow:0 0 80px rgba(0,230,118,.08),0 30px 80px rgba(0,0,0,.5)}
@@ -72,18 +64,14 @@
         .wab{display:flex;align-items:center;gap:.6rem;padding:.9rem 2rem;border-radius:14px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.1rem;text-decoration:none;background:#25d366;color:#fff;transition:all .3s ease;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(37,211,102,.25);width:100%;justify-content:center}
         .wab:hover{background:#1da851;transform:translateY(-2px);box-shadow:0 8px 30px rgba(37,211,102,.35)}
         .wab i{font-size:1.3rem}
-        .wab2{background:var(--ac);color:#0a0a0f;margin-top:.7rem;box-shadow:0 4px 20px rgba(0,230,118,.25)}
-        .wab2:hover{background:#00c853;box-shadow:0 8px 30px rgba(0,230,118,.35)}
         .clb{display:block;margin:1.2rem auto 0;background:transparent;border:1px solid rgba(255,255,255,.08);color:var(--mt);padding:.5rem 1.5rem;border-radius:8px;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:.85rem;cursor:pointer;transition:all .3s ease}
         .clb:hover{border-color:rgba(255,255,255,.15);color:var(--fg)}
-
         .tct{position:fixed;top:1.5rem;right:1.5rem;z-index:200;display:flex;flex-direction:column;gap:.5rem}
         .tst{padding:.8rem 1.2rem;border-radius:10px;font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:.5rem;animation:ti .4s ease-out;backdrop-filter:blur(10px);max-width:340px}
         .tst.er{background:rgba(255,23,68,.15);border:1px solid rgba(255,23,68,.3);color:#ff5252}
         .tst.ok{background:rgba(0,230,118,.15);border:1px solid rgba(0,230,118,.3);color:var(--ac)}
         .aln{position:fixed;bottom:1rem;right:1rem;z-index:50;width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s ease;color:rgba(255,255,255,.12);font-size:.9rem}
         .aln:hover{border-color:var(--bc);color:var(--mt);background:rgba(255,255,255,.05)}
-
         .aov{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:300;display:none;flex-direction:column;overflow:hidden}
         .aov.vi{display:flex;animation:oi .3s ease-out}
         .ahd{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--bd);background:rgba(10,10,15,.95);backdrop-filter:blur(10px);flex-shrink:0}
@@ -121,14 +109,12 @@
         .abt.da{background:rgba(255,23,68,.08);border-color:rgba(255,23,68,.2);color:var(--fr)}.abt.da:hover{background:rgba(255,23,68,.15)}
         .twp{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;overflow:hidden;backdrop-filter:blur(10px)}
         .tsc{overflow-x:auto}
-        table{width:100%;border-collapse:collapse;min-width:650px}
+        table{width:100%;border-collapse:collapse;min-width:600px}
         thead th{padding:.85rem 1rem;text-align:left;font-size:.72rem;font-weight:700;color:var(--mt);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--bd);background:rgba(0,0,0,.3);white-space:nowrap;position:sticky;top:0}
         thead th:first-child{width:50px;text-align:center}thead th:last-child{width:50px}
         tbody td{padding:.75rem 1rem;font-size:.88rem;border-bottom:1px solid rgba(255,255,255,.025);vertical-align:middle}
         tbody tr{transition:background .2s ease}tbody tr:hover{background:rgba(0,230,118,.03)}tbody tr:last-child td{border-bottom:none}
         tbody td:first-child{text-align:center;color:var(--mt);font-size:.8rem;font-weight:600}
-        .dbdg{display:inline-block;padding:.15rem .5rem;border-radius:5px;font-size:.72rem;font-weight:700}
-        .dbdg.ce{background:rgba(0,230,118,.1);color:var(--ac)}.dbdg.fn{background:rgba(255,109,0,.1);color:var(--fo)}
         .gicl{font-family:'Orbitron',sans-serif;font-size:.82rem;color:var(--ac);letter-spacing:.5px}
         .dcl{color:var(--mt);font-size:.82rem;white-space:nowrap}
         .drw{background:transparent;border:1px solid rgba(255,23,68,.12);color:rgba(255,23,68,.5);width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:.75rem;transition:all .2s ease;display:flex;align-items:center;justify-content:center}
@@ -153,7 +139,6 @@
     <div class="cg"></div>
     <div class="gw w1"></div>
     <div class="gw w2"></div>
-
     <div class="tct" id="tCo"></div>
     <div class="aln" id="aLn" title="Administracion" role="button" tabindex="0" aria-label="Panel de administracion"><i class="fa-solid fa-lock"></i></div>
 
@@ -173,33 +158,27 @@
                     <div class="fg"><label class="fl" for="nom">Nombre</label><input type="text" class="fi" id="nom" placeholder="Tu nombre" autocomplete="given-name" required><div class="em" id="nEr"><i class="fa-solid fa-circle-exclamation"></i> Ingresa tu nombre</div></div>
                     <div class="fg"><label class="fl" for="ape">Apellido</label><input type="text" class="fi" id="ape" placeholder="Tu apellido" autocomplete="family-name" required><div class="em" id="aEr"><i class="fa-solid fa-circle-exclamation"></i> Ingresa tu apellido</div></div>
                 </div>
-                <label class="fl">Documento de identidad</label>
-                <div class="tg" role="radiogroup" aria-label="Tipo de documento">
-                    <button type="button" class="to ac" data-value="cedula" role="radio" aria-checked="true"><i class="fa-solid fa-id-card" style="margin-right:4px"></i> Tengo cedula</button>
-                    <button type="button" class="to" data-value="fecha" role="radio" aria-checked="false"><i class="fa-solid fa-cake-candles" style="margin-right:4px"></i> No tengo cedula</button>
-                </div>
-                <div class="cfd vi" id="cFd"><label class="fl" for="ced">Numero de cedula</label><input type="text" class="fi" id="ced" placeholder="182 451289 4000D" autocomplete="off"><div class="em" id="cEr"><i class="fa-solid fa-circle-exclamation"></i> Ingresa tu numero de cedula</div></div>
-                <div class="cfd" id="fFd"><label class="fl" for="fnac">Fecha de nacimiento</label><input type="date" class="fi" id="fnac"><div class="em" id="fEr"><i class="fa-solid fa-circle-exclamation"></i> Ingresa tu fecha de nacimiento</div></div>
-                <div class="fg"><label class="fl" for="gid">ID de Free Fire</label><input type="text" class="fi" id="gid" placeholder="Ej: 1234567890" inputmode="numeric" required><div class="em" id="gEr"><i class="fa-solid fa-circle-exclamation"></i> Ingresa tu ID de Free Fire</div></div>
+                <div class="fg"><label class="fl" for="edad">Edad</label><input type="number" class="fi" id="edad" placeholder="Ej: 18" min="10" max="99" inputmode="numeric" required><div class="em" id="edEr"><i class="fa-solid fa-circle-exclamation"></i> Ingresa tu edad</div></div>
+                <div class="fg"><label class="fl" for="ign">Nombre de usuario (IGN)</label><input type="text" class="fi" id="ign" placeholder="Tal cual aparece en el juego" autocomplete="off" required><div class="em" id="igEr"><i class="fa-solid fa-circle-exclamation"></i> Ingresa tu IGN</div></div>
+                <div class="fg"><label class="fl" for="gid">ID de Free Fire</label><input type="text" class="fi" id="gid" placeholder="Tu codigo numerico unico" inputmode="numeric" required><div class="em" id="gEr"><i class="fa-solid fa-circle-exclamation"></i> Ingresa tu ID de Free Fire</div></div>
                 <button type="submit" class="sbt">REGISTRARME AHORA</button>
             </form>
         </div>
         <footer class="ftr">TORNEO RELAMPAGO FREE FIRE</footer>
     </main>
 
-    <!-- Modal de exito -->
+    <!-- Modal exito -->
     <div class="sov" id="sOvl" role="dialog" aria-modal="true">
         <div class="scd">
             <div class="sic"><i class="fa-solid fa-check"></i></div>
             <div class="stit">REGISTRO EXITOSO</div>
-            <p class="ssub">Se abrio WhatsApp con tus datos. Envialo para completar tu inscripcion. Luego unete al grupo del torneo.</p>
-            <a href="#" id="waEnvBtn" target="_blank" rel="noopener noreferrer" class="wab wab2"><i class="fa-brands fa-whatsapp"></i> Enviar mis datos por WhatsApp</a>
-            <a href="https://chat.whatsapp.com/EU7gD1g87gm8gpovBpewKa" target="_blank" rel="noopener noreferrer" class="wab"><i class="fa-brands fa-whatsapp"></i> Unirme al grupo del torneo</a>
+            <p class="ssub">Se abrio WhatsApp con tus datos para enviar al grupo. Presiona enviar para completar tu inscripcion.</p>
+            <a href="#" id="waBtn" target="_blank" rel="noopener noreferrer" class="wab"><i class="fa-brands fa-whatsapp"></i> Enviar datos al grupo</a>
             <button class="clb" id="cMb">Cerrar</button>
         </div>
     </div>
 
-    <!-- Panel admin -->
+    <!-- Admin -->
     <div class="aov" id="aPnl">
         <div class="ahd"><h2><i class="fa-solid fa-shield-halved"></i> Panel de Administracion</h2><button class="bck" id="bBk"><i class="fa-solid fa-arrow-left"></i> Volver</button></div>
         <div class="abody">
@@ -217,46 +196,28 @@
                     <div class="crw" style="margin-top:.5rem"><input type="password" id="nPw" placeholder="Nueva contrasena" autocomplete="new-password"><button id="sPwB">Cambiar</button></div>
                 </div>
                 <div class="sbar">
-                    <div class="swrp"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="sInp" placeholder="Buscar por nombre, ID o cedula..."></div>
+                    <div class="swrp"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="sInp" placeholder="Buscar por nombre, IGN o ID..."></div>
                     <div class="abtn"><button class="abt cv" id="exBt"><i class="fa-solid fa-file-csv"></i> CSV</button><button class="abt da" id="dABt"><i class="fa-solid fa-trash"></i> Borrar todo</button></div>
                 </div>
-                <div class="twp"><div class="tsc"><table><thead><tr><th>#</th><th>Nombre completo</th><th>Documento</th><th>ID Free Fire</th><th>Fecha registro</th><th></th></tr></thead><tbody id="tBdy"></tbody></table></div></div>
+                <div class="twp"><div class="tsc"><table><thead><tr><th>#</th><th>Nombre completo</th><th>Edad</th><th>IGN</th><th>ID Free Fire</th><th>Fecha</th><th></th></tr></thead><tbody id="tBdy"></tbody></table></div></div>
             </div>
         </div>
     </div>
 
-    <!-- Confirm dialog -->
-    <div class="cov" id="cOvl"><div class="cobx"><h4 id="cTtl">Confirmar</h4><p id="cMsg">Seguro que deseas continuar?</p><div class="cobts"><button class="ccan" id="cCnl">Cancelar</button><button class="ccfm" id="cCfm">Confirmar</button></div></div></div>
+    <!-- Confirm -->
+    <div class="cov" id="cOvl"><div class="cobx"><h4 id="cTtl">Confirmar</h4><p id="cMsg">Seguro?</p><div class="cobts"><button class="ccan" id="cCnl">Cancelar</button><button class="ccfm" id="cCfm">Confirmar</button></div></div></div>
 
     <script>
-    /* Particulas de fondo */
-    (function(){
-        var c=document.getElementById('pc'),x=c.getContext('2d'),p=[];
-        function rz(){c.width=innerWidth;c.height=innerHeight}rz();addEventListener('resize',rz);
-        for(var i=0;i<40;i++)p.push({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,s:Math.random()*2+0.5,o:Math.random()*0.3+0.1,c:Math.random()>0.7?'255,109,0':'0,230,118'});
-        function d(){x.clearRect(0,0,c.width,c.height);p.forEach(function(q){q.x+=q.vx;q.y+=q.vy;if(q.x<0||q.x>c.width)q.vx*=-1;if(q.y<0||q.y>c.height)q.vy*=-1;x.beginPath();x.arc(q.x,q.y,Math.max(0.5,q.s),0,Math.PI*2);x.fillStyle='rgba('+q.c+','+q.o+')';x.fill()});for(var i=0;i<p.length;i++)for(var j=i+1;j<p.length;j++){var a=p[i].x-p[j].x,b=p[i].y-p[j].y,h=Math.sqrt(a*a+b*b);if(h<100){x.beginPath();x.moveTo(p[i].x,p[i].y);x.lineTo(p[j].x,p[j].y);x.strokeStyle='rgba(0,230,118,'+(0.04*(1-h/100))+')';x.lineWidth=0.5;x.stroke()}}requestAnimationFrame(d)}d();
-    })();
+    /* Particulas */
+    (function(){var c=document.getElementById('pc'),x=c.getContext('2d'),p=[];function rz(){c.width=innerWidth;c.height=innerHeight}rz();addEventListener('resize',rz);for(var i=0;i<40;i++)p.push({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,s:Math.random()*2+0.5,o:Math.random()*0.3+0.1,c:Math.random()>0.7?'255,109,0':'0,230,118'});function d(){x.clearRect(0,0,c.width,c.height);p.forEach(function(q){q.x+=q.vx;q.y+=q.vy;if(q.x<0||q.x>c.width)q.vx*=-1;if(q.y<0||q.y>c.height)q.vy*=-1;x.beginPath();x.arc(q.x,q.y,Math.max(0.5,q.s),0,Math.PI*2);x.fillStyle='rgba('+q.c+','+q.o+')';x.fill()});for(var i=0;i<p.length;i++)for(var j=i+1;j<p.length;j++){var a=p[i].x-p[j].x,b=p[i].y-p[j].y,h=Math.sqrt(a*a+b*b);if(h<100){x.beginPath();x.moveTo(p[i].x,p[i].y);x.lineTo(p[j].x,p[j].y);x.strokeStyle='rgba(0,230,118,'+(0.04*(1-h/100))+')';x.lineWidth=0.5;x.stroke()}}requestAnimationFrame(d)}d()})();
 
     /* Estado */
-    var DT='cedula';
     var PW=localStorage.getItem('ff_pw')||'admin123';
     var R=JSON.parse(localStorage.getItem('ff_r')||'[]');
-    var NUM_ADMIN='50578798505';
+    var GRUPO_URL='https://chat.whatsapp.com/EU7gD1g87gm8gpovBpewKa';
 
-    /* Toggle cedula/fecha */
-    var tOs=document.querySelectorAll('.to');
-    tOs.forEach(function(b){
-        b.addEventListener('click',function(){
-            tOs.forEach(function(o){o.classList.remove('ac');o.setAttribute('aria-checked','false')});
-            b.classList.add('ac');b.setAttribute('aria-checked','true');
-            DT=b.dataset.value;
-            document.getElementById('cFd').classList.toggle('vi',DT==='cedula');
-            document.getElementById('fFd').classList.toggle('vi',DT==='fecha');
-            clE();
-        });
-    });
-
-    /* Solo numeros en ID Free Fire */
+    /* Solo numeros */
+    document.getElementById('edad').addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'')});
     document.getElementById('gid').addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'')});
 
     /* Validacion */
@@ -268,27 +229,24 @@
         clE();var o=true;
         if(!document.getElementById('nom').value.trim()){shE('nom','nEr');o=false}
         if(!document.getElementById('ape').value.trim()){shE('ape','aEr');o=false}
-        if(DT==='cedula'){if(!document.getElementById('ced').value.trim()||document.getElementById('ced').value.trim().length<3){shE('ced','cEr');o=false}}
-        else{if(!document.getElementById('fnac').value){shE('fnac','fEr');o=false}}
+        if(!document.getElementById('edad').value.trim()||parseInt(document.getElementById('edad').value)<10||parseInt(document.getElementById('edad').value)>99){shE('edad','edEr');o=false}
+        if(!document.getElementById('ign').value.trim()){shE('ign','igEr');o=false}
         if(!document.getElementById('gid').value.trim()||document.getElementById('gid').value.trim().length<4){shE('gid','gEr');o=false}
         if(!o)tsT('Completa todos los campos correctamente','er');
         return o;
     }
 
-    /* Armar mensaje de WhatsApp */
-    function armarMensaje(r){
-        var doc = DT==='cedula' ? 'Cedula: '+r.docValue : 'Nacimiento: '+r.docValue;
-        var msg = '*TORNEO RELAMPAGO FREE FIRE*\n';
-        msg += '*NUEVO REGISTRO*\n\n';
-        msg += 'Nombre: '+r.nombre+'\n';
-        msg += 'Apellido: '+r.apellido+'\n';
-        msg += doc+'\n';
-        msg += 'ID Free Fire: '+r.gameId+'\n';
-        msg += 'Fecha: '+new Date(r.timestamp).toLocaleString('es-CO');
-        return msg;
+    /* Armar mensaje */
+    function armarMsg(r){
+        var m='*TORNEO RELAMPAGO FREE FIRE*\n*NUEVO REGISTRO*\n\n';
+        m+='Nombre: '+r.nombre+' '+r.apellido+'\n';
+        m+='Edad: '+r.edad+' anos\n';
+        m+='IGN: '+r.ign+'\n';
+        m+='ID Free Fire: '+r.gameId;
+        return m;
     }
 
-    /* Registro principal */
+    /* Registro */
     document.getElementById('rFm').addEventListener('submit',function(e){
         e.preventDefault();
         if(!vLd())return;
@@ -297,32 +255,29 @@
             id:Date.now(),
             nombre:document.getElementById('nom').value.trim(),
             apellido:document.getElementById('ape').value.trim(),
-            docType:DT,
-            docValue:DT==='cedula'?document.getElementById('ced').value.trim():document.getElementById('fnac').value,
+            edad:document.getElementById('edad').value.trim(),
+            ign:document.getElementById('ign').value.trim(),
             gameId:document.getElementById('gid').value.trim(),
             timestamp:Date.now()
         };
 
-        /* Guardar localmente para el admin */
+        /* Guardar para admin */
         R.push(r);
         localStorage.setItem('ff_r',JSON.stringify(R));
 
-        /* Armar enlace de WhatsApp con los datos */
-        var msg = armarMensaje(r);
-        var waUrl = 'https://wa.me/'+NUM_ADMIN+'?text='+encodeURIComponent(msg);
-        document.getElementById('waEnvBtn').href = waUrl;
-
-        /* Abrir WhatsApp automaticamente */
+        /* Abrir WhatsApp con datos al grupo */
+        var msg=armarMsg(r);
+        var waUrl='https://api.whatsapp.com/send?text='+encodeURIComponent(msg);
         window.open(waUrl,'_blank');
 
         /* Mostrar modal */
+        document.getElementById('waBtn').href=waUrl;
         document.getElementById('sOvl').classList.add('vi');
         document.body.style.overflow='hidden';
         tsT('Registro completado','ok');
 
         /* Reset */
         document.getElementById('rFm').reset();
-        tOs[0].click();
     });
 
     /* Cerrar modal */
@@ -372,20 +327,12 @@
     function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
 
     function rTb(f){
-        var tb=document.getElementById('tBdy');
-        var d=R;
-        if(f){
-            var q=f.toLowerCase();
-            d=R.filter(function(r){return r.nombre.toLowerCase().indexOf(q)>=0||r.apellido.toLowerCase().indexOf(q)>=0||r.gameId.indexOf(q)>=0||r.docValue.toLowerCase().indexOf(q)>=0});
-        }
-        if(!d.length){
-            tb.innerHTML='<tr><td colspan="6"><div class="esst"><i class="fa-solid fa-inbox"></i><p>'+(f?'Sin resultados':'No hay registros')+'</p></div></td></tr>';
-            return;
-        }
+        var tb=document.getElementById('tBdy'),d=R;
+        if(f){var q=f.toLowerCase();d=R.filter(function(r){return r.nombre.toLowerCase().indexOf(q)>=0||r.apellido.toLowerCase().indexOf(q)>=0||r.ign.toLowerCase().indexOf(q)>=0||r.gameId.indexOf(q)>=0})}
+        if(!d.length){tb.innerHTML='<tr><td colspan="7"><div class="esst"><i class="fa-solid fa-inbox"></i><p>'+(f?'Sin resultados':'No hay registros')+'</p></div></td></tr>';return}
         tb.innerHTML=d.map(function(r,i){
-            var bg=r.docType==='cedula'?'<span class="dbdg ce">Cedula: '+esc(r.docValue)+'</span>':'<span class="dbdg fn">Nac: '+esc(r.docValue)+'</span>';
             var fe=r.timestamp?new Date(r.timestamp).toLocaleString('es-CO',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):'N/A';
-            return '<tr><td>'+(i+1)+'</td><td style="font-weight:700">'+esc(r.nombre)+' '+esc(r.apellido)+'</td><td>'+bg+'</td><td class="gicl">'+esc(r.gameId)+'</td><td class="dcl">'+fe+'</td><td><button class="drw" onclick="delR('+r.id+')" title="Eliminar"><i class="fa-solid fa-xmark"></i></button></td></tr>';
+            return'<tr><td>'+(i+1)+'</td><td style="font-weight:700">'+esc(r.nombre)+' '+esc(r.apellido)+'</td><td>'+esc(r.edad)+'</td><td style="color:var(--fo);font-weight:600">'+esc(r.ign)+'</td><td class="gicl">'+esc(r.gameId)+'</td><td class="dcl">'+fe+'</td><td><button class="drw" onclick="delR('+r.id+')" title="Eliminar"><i class="fa-solid fa-xmark"></i></button></td></tr>';
         }).join('');
     }
 
@@ -401,52 +348,34 @@
 
     document.getElementById('dABt').addEventListener('click',function(){
         if(!R.length){tsT('No hay registros','er');return}
-        shCf('Borrar todo','Se eliminaran '+R.length+' registros. No se puede deshacer.',function(){
-            R=[];localStorage.setItem('ff_r',JSON.stringify(R));
-            rAd();tsT('Todos los registros eliminados','ok');
+        shCf('Borrar todo','Se eliminaran '+R.length+' registros.',function(){
+            R=[];localStorage.setItem('ff_r',JSON.stringify(R));rAd();tsT('Todos eliminados','ok');
         });
     });
 
-    /* Exportar CSV */
     document.getElementById('exBt').addEventListener('click',function(){
         if(!R.length){tsT('No hay datos','er');return}
-        var h='Nombre,Apellido,Tipo Documento,Documento,ID Free Fire,Fecha Registro\n';
-        var rows=R.map(function(r){
-            return '"'+r.nombre+'","'+r.apellido+'","'+(r.docType==='cedula'?'Cedula':'Fecha Nacimiento')+'","'+r.docValue+'","'+r.gameId+'","'+(r.timestamp?new Date(r.timestamp).toLocaleString('es-CO'):'N/A')+'"';
-        }).join('\n');
+        var h='Nombre,Apellido,Edad,IGN,ID Free Fire,Fecha Registro\n';
+        var rows=R.map(function(r){return'"'+r.nombre+'","'+r.apellido+'","'+r.edad+'","'+r.ign+'","'+r.gameId+'","'+(r.timestamp?new Date(r.timestamp).toLocaleString('es-CO'):'N/A')+'"'}).join('\n');
         var blob=new Blob(['\uFEFF'+h+rows],{type:'text/csv;charset=utf-8;'});
-        var a=document.createElement('a');
-        a.href=URL.createObjectURL(blob);
-        a.download='torneo_freefire_'+new Date().toISOString().slice(0,10)+'.csv';
-        a.click();
+        var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='torneo_freefire_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
         tsT('CSV descargado','ok');
     });
 
-    /* Cambiar contraseña */
     document.getElementById('sPwB').addEventListener('click',function(){
         var v=document.getElementById('nPw').value;
         if(!v||v.length<4){tsT('Minimo 4 caracteres','er');return}
-        PW=v;localStorage.setItem('ff_pw',PW);
-        document.getElementById('nPw').value='';
-        tsT('Contrasena actualizada','ok');
+        PW=v;localStorage.setItem('ff_pw',PW);document.getElementById('nPw').value='';tsT('Contrasena actualizada','ok');
     });
 
-    /* Confirm dialog */
+    /* Confirm */
     var cfCb=null;
-    function shCf(title,msg,cb){document.getElementById('cTtl').textContent=title;document.getElementById('cMsg').textContent=msg;document.getElementById('cOvl').classList.add('vi');cfCb=cb}
+    function shCf(t,m,cb){document.getElementById('cTtl').textContent=t;document.getElementById('cMsg').textContent=m;document.getElementById('cOvl').classList.add('vi');cfCb=cb}
     function clCf(){document.getElementById('cOvl').classList.remove('vi');cfCb=null}
     document.getElementById('cCnl').addEventListener('click',clCf);
     document.getElementById('cCfm').addEventListener('click',function(){if(cfCb)cfCb();clCf()});
     document.getElementById('cOvl').addEventListener('click',function(e){if(e.target===document.getElementById('cOvl'))clCf()});
-
-    /* Escape global */
-    document.addEventListener('keydown',function(e){
-        if(e.key==='Escape'){
-            document.getElementById('sOvl').classList.remove('vi');
-            document.body.style.overflow='';
-            cAd();clCf();
-        }
-    });
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.getElementById('sOvl').classList.remove('vi');document.body.style.overflow='';cAd();clCf()}});
     </script>
 </body>
 </html>
